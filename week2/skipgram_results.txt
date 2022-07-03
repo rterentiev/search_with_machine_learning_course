@@ -1,0 +1,36 @@
+(search_with_ml) gitpod /workspace/datasets/fasttext $ ~/fastText-0.9.2/fasttext nn /workspace/datasets/fasttext/skipgram_model_epoch10.bin 
+Query word? iphone
+4s 0.859715
+apple 0.781736
+3gs 0.753734
+ipod 0.715139
+ipad 0.656283
+mophie 0.621879
+appleÂ 0.616037
+ifrogz 0.606071
+4th 0.598995
+ilive 0.582583
+
+Query word? headphones
+headphone 0.900337
+earbud 0.887096
+ear 0.855401
+earphones 0.738875
+behind 0.717807
+hesh 0.701745
+bud 0.699756
+canceling 0.675111
+isolating 0.670684
+lowrider 0.661256
+
+Query word? xbox
+360 0.946989
+playstation 0.847556
+ps3 0.765519
+wii 0.716405
+oblivion 0.702782
+ps2 0.697108
+psp 0.695168
+guide 0.681614
+strategy 0.675801
+wwii 0.671146

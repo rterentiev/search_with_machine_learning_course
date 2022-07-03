@@ -22,7 +22,6 @@ general.add_argument("--label", default="id", help="id is default and needed for
 # random sample.
 general.add_argument("--sample_rate", default=1.0, type=float, help="The rate at which to sample input (default is 1.0)")
 
-# IMPLEMENT: Setting min_products removes infrequent categories and makes the classifier's task easier.
 general.add_argument("--min_products", default=0, type=int, help="The minimum number of products per category (default is 0).")
 
 args = parser.parse_args()
@@ -34,14 +33,15 @@ if os.path.isdir(output_dir) == False:
 
 if args.input:
     directory = args.input
-# IMPLEMENT:  Track the number of items in each category and only output if above the min
+
 min_products = args.min_products
 sample_rate = args.sample_rate
 names_as_labels = False
 if args.label == 'name':
     names_as_labels = True
 
-print("Writing results to %s" % output_file)
+print("Processing. Min products %s" % min_products)
+result = {}
 with open(output_file, 'w') as output:
     for filename in os.listdir(directory):
         if filename.endswith(".xml"):
@@ -65,4 +65,16 @@ with open(output_file, 'w') as output:
                           cat = child.find('categoryPath')[len(child.find('categoryPath')) - 1][0].text
                       # Replace newline chars with spaces so fastText doesn't complain
                       name = child.find('name').text.replace('\n', ' ')
-                      output.write("__label__%s %s\n" % (cat, transform_name(name)))
+
+                      if cat not in result:
+                        result[cat] = []
+                      result[cat].append(transform_name(name))
+
+    print("Writing results to %s" % output_file)
+    for cat in result:
+        if min_products == 0 or len(result[cat]) >= min_products:
+            for name in result[cat]:
+                output.write("__label__%s %s\n" % (cat, name))
+        else:
+            print("Skip category %s. Number of products %s" % (cat, len(result[cat])))
+
